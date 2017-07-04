@@ -29,6 +29,50 @@ namespace Logic.NUnit.Test
 
         #endregion
 
+        #region Sort
+        [TestCase(new[] { 1, 2, 3, 4, 3, 2, 1 }, ExpectedResult = new[] { 1, 1, 2, 2, 3, 3, 4 })]
+        [TestCase(new[] { 1, 100, 50, -51, 1, 1 }, ExpectedResult = new[] { -51, 1, 1, 1, 50, 100 })]
+        [TestCase(new[] { 0, 10, 5, 4 }, ExpectedResult = new[] { 0, 4, 5, 10 })]
+        public int[] QuickSort_ValidInputArray_SortedArray(int[] arr)
+        {
+            IntAlg.QuickSort(arr);
+            return arr;
+        }
+
+        [TestCase(new int[] { })]
+        public void QuickSort_EmptyInputArray_ArgumentException(int[] arr)
+        {
+            Assert.Throws<ArgumentException>(() => IntAlg.QuickSort(arr));
+        }
+
+        [TestCase(null)]
+        public void QuickSort_NullInputArray_NullReferenceException(int[] arr)
+        {
+            Assert.Throws<NullReferenceException>(() => IntAlg.QuickSort(arr));
+        }
+
+        [TestCase(new[] { 1, 2, 3, 4, 3, 2, 1 }, ExpectedResult = new[] { 1, 1, 2, 2, 3, 3, 4 })]
+        [TestCase(new[] { 1, 100, 50, -51, 1, 1 }, ExpectedResult = new[] { -51, 1, 1, 1, 50, 100 })]
+        [TestCase(new[] { 0, 10, 5, 4 }, ExpectedResult = new[] { 0, 4, 5, 10 })]
+        public int[] MergeSort_ValidInputArray_SortedArray(int[] arr)
+        {
+            IntAlg.MergeSort(arr);
+            return arr;
+        }
+
+        [TestCase(new int[] { })]
+        public void MergeSort_EmptyInputArray_ArgumentException(int[] arr)
+        {
+            Assert.Throws<ArgumentException>(() => IntAlg.MergeSort(arr));
+        }
+
+        [TestCase(null)]
+        public void MergeSort_NullInputArray_NullReferenceException(int[] arr)
+        {
+            Assert.Throws<NullReferenceException>(() => IntAlg.MergeSort(arr));
+        }
+        #endregion
+
         #region NextBiggerNumber
         [TestCase(12, ExpectedResult = 21)]
         [TestCase(513, ExpectedResult = 531)]
