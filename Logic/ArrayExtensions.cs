@@ -6,17 +6,25 @@ using System.Threading.Tasks;
 
 namespace Logic
 {
-    public class IntAlg
+    public class ArrayExtensions
     {
         #region Insertion
+        /// <summary>
+        /// Inserts bits from positions i and j second number to first number
+        /// </summary>
+        /// <param name="first">The number that have to be inserted</param>
+        /// <param name="second">The number some bites of wich have to be inserted into first</param>
+        /// <param name="i">first index of bit</param>
+        /// <param name="j">last index of bit</param>
         public static int? Insertion(int first, int second, int i, int j)
         {
-            CheckIndexes(i,j);
-            int mask1 = second << j;
-            int mask2 = int.MaxValue >> 30 - i;
-            int totalMask = mask1 & mask2;
-            return first & totalMask;
+            CheckIndexes(i, j);
+            int mask1 = (second << j) & (int.MaxValue >> 30 - i);
+            int mask2 = ~((int.MaxValue << j) & (int.MaxValue >> 30 - i));
+
+            return (first & mask2) | mask1;
         }
+
         private static void CheckIndexes(int i, int j)
         {
             if (i < j || i > 32)
@@ -27,35 +35,56 @@ namespace Logic
         #endregion
 
         #region FindIndex
+        ///<summary>
+        ///Finds the first element in array, 
+        ///for which the sum of right subarray equals
+        ///the sum of left subarray
+        ///</summary>
+        ///<param name="arr">
+        ///Integer array
+        /// </param>
+        /// <returns>
+        ///Index of the first element in array, 
+        ///for which the sum of right subarray equals
+        ///the sum of left subarray
+        /// </returns>
         public static int FindIndex(int[] arr)
         {
             CheckArray(arr);
             int rightSum = 0;
+
             for (int i = 1; i < arr.Length; i++)
             {
                 rightSum += arr[i];
             }
+
             int leftSum = 0;
             int index = 0;
+
             while (leftSum < rightSum)
             {
                 index++;
                 leftSum += arr[index - 1];
                 rightSum -= arr[index];
             }
+
             if (leftSum == rightSum) return index;
             return -1;
         }
 
         private static void CheckArray(int[] a)
         {
-            if (a == null) throw new NullReferenceException();
+            if (a == null) throw new ArgumentNullException();
             if (a.Length == 0) throw new ArgumentException();
             if (a.Length > 1000) throw new ArgumentException();
         }
         #endregion
 
         #region Sort
+        /// <summary>
+        /// Quick sort algorithm
+        /// </summary>
+        /// <param name="arr">The array to be sorted</param>
         public static void QuickSort(int[] arr)
         {
             CheckInputArray(arr);
@@ -85,6 +114,11 @@ namespace Logic
             if (i < right)
                 QuickSort(arr, i, right);
         }
+
+        /// <summary>
+        /// Merge sort algorithm
+        /// </summary>
+        /// <param name="arr">The array to be sorted</param>
         public static void MergeSort(int[] arr)
         {
             CheckInputArray(arr);
@@ -144,11 +178,12 @@ namespace Logic
                 }
             }
         }
+
         private static void CheckInputArray(int[] arr)
         {
             if (arr == null)
             {
-                throw new NullReferenceException();
+                throw new ArgumentNullException();
             }
             if (arr.Length == 0)
             {
@@ -158,17 +193,35 @@ namespace Logic
         #endregion
 
         #region NextBiggerNumber
-        public static int NextBiggerNumber(int a)
+        ///<summary>
+        ///Gets a positive integer number and returns the Next Bigger Number consisting from the same didgits
+        /// </summary>
+        /// <param name="number">
+        /// Positive number
+        /// </param>
+        /// <returns>
+        /// Next Bigger Number consisting from the same didgits.
+        /// If not exist returns -1.
+        /// </returns>
+        public static int NextBiggerNumber(int number)
         {
-            CheckNumber(a);
-            int[] arr = GetArrayFromNumber(a);
+            CheckNumber(number);
+
+            int[] arr = GetArrayFromNumber(number);
+
             for (int i = 1; i < arr.Length; i++)
             {
-                if (arr[i] < arr[i-1])
+                if (arr[i] < arr[i - 1])
                 {
-                    Swap(ref arr[i], ref arr[i-1]);
-                    Sort(arr,0, i-1);
-                    return FormNumberFromArray(arr);
+                    for (int j = 0; j <= i - 1; j++)
+                    {
+                        if (arr[j] <= arr[i - 1] && arr[j] > arr[i])
+                        {
+                            Swap(ref arr[i], ref arr[j]);
+                            Sort(arr, 0, i - 1);
+                            return FormNumberFromArray(arr);
+                        }
+                    }
                 }
             }
             return -1;
@@ -181,10 +234,11 @@ namespace Logic
                 throw new ArgumentException();
             }
         }
+
         private static int FormNumberFromArray(int[] arr)
         {
             int res = 0;
-            for (int i = arr.Length-1; i >=0; i--)
+            for (int i = arr.Length - 1; i >= 0; i--)
             {
                 res = res * 10 + arr[i];
             }
@@ -242,6 +296,5 @@ namespace Logic
             return n;
         }
         #endregion
-
     }
 }
