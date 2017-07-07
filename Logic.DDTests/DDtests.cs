@@ -19,7 +19,8 @@ namespace Logic.DDTests
         {
             int expected = Convert.ToInt32(TestContext.DataRow["ExpectedResult"]);
             int number = Convert.ToInt32(TestContext.DataRow["FirstArg"]);
-            int actual = ArrayExtensions.NextBiggerNumber(number);
+            long time;
+            int actual = ArrayExtensions.NextBiggerNumber(number,out time);
 
             Assert.AreEqual(expected, actual);
 

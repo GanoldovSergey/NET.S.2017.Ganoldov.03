@@ -86,14 +86,16 @@ namespace Logic.NUnit.Test
         [TestCase(20, ExpectedResult = -1)]
         public static int NextBiggerNumber_ValidInputNumber_NextBiggerNumber(int n)
         {
-            return ArrayExtensions.NextBiggerNumber(n);
+            long time;
+            return ArrayExtensions.NextBiggerNumber(n,out time);
         }
 
         [TestCase(-12)]
         [TestCase(0)]
         public static void NextBiggerNumber_InValidInputNumber_ThrowsArgumentException(int n)
         {
-            Assert.Throws<ArgumentException>(() => ArrayExtensions.NextBiggerNumber(n));
+            long time;
+            Assert.Throws<ArgumentException>(() => ArrayExtensions.NextBiggerNumber(n,out time));
         }
 
         #endregion

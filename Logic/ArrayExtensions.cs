@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -203,10 +204,11 @@ namespace Logic
         /// Next Bigger Number consisting from the same didgits.
         /// If not exist returns -1.
         /// </returns>
-        public static int NextBiggerNumber(int number)
+        public static int NextBiggerNumber(int number,out long time)
         {
+            Stopwatch t = new Stopwatch();
+            t.Start();
             CheckNumber(number);
-
             int[] arr = GetArrayFromNumber(number);
 
             for (int i = 1; i < arr.Length; i++)
@@ -219,11 +221,13 @@ namespace Logic
                         {
                             Swap(ref arr[i], ref arr[j]);
                             Sort(arr, 0, i - 1);
+                            time = t.ElapsedMilliseconds;
                             return FormNumberFromArray(arr);
                         }
                     }
                 }
             }
+            time = t.ElapsedMilliseconds;
             return -1;
         }
 
